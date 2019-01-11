@@ -1,0 +1,126 @@
+<!DOCTYPE <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Cafe Locator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <style>
+        #map{
+            height: 100%
+        };
+        html, body {
+            height: 100%;
+            padding: 0;
+            margin: 0
+        }
+    </style>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBOIIADyCTwYHKJsjDlF_uTCXjYDc3IYRc&libraries=places"
+    ></script>
+    
+   
+    
+</head>
+<body>
+    <div id='map'></div>
+    <div id='error'></div>
+    <script>
+        var map, lat, lng;
+        let errorHandle = document.getElementById('error');
+       
+
+        //generating a new map within the html container 'map' and with option as center: home in tucosn and zoom levels
+
+        //a function intiMap to initizlze or generate a new map
+        function initMap(lat,lng) {
+            console.log(lat,lng);
+            var userCenter = new google.maps.LatLng(lat,lng);
+            console.log('1.generated the user center');
+            map = new google.maps.Map(document.getElementById('map'), {
+
+            center: {lat, lng},
+            zoom: 8
+            });
+
+             //request object which has the user's location details and radius , shop is open 
+            var request = {
+                location: userCenter,
+                radius: 8047,//5 miles to m
+                type: ['cafe','coffee']
+            } 
+            
+           
+            //a places service object is created to find the nearby locations to the user's location using the google.maps.placesService class which cretaes a PlacesService object and then corresponding methods can be used on the instance.
+
+            var service = new google.maps.places.PlacesService(document.getElementById('map'));
+            console.log('2, created the placesservice object',service);
+            //using the method nearbySearch to get the near by places using the request obj parameter and the callback function
+            service.nearbySearch(request,callback);
+
+
+            function callback(placesResults,status){
+            console.log('3. inside the callback func')
+            console.log('status',status);
+            if(status == google.maps.places.PlacesServiceStatus.OK){
+                placesResults.forEach((place) =>{
+                    console.log(place);
+                    createMarker(place);
+                })
+            }
+        }
+
+        function createMarker(place){
+            console.log('4. inside the marker funct')
+            var content;
+            var marker = new google.maps.Marker({
+                map,
+                position: place.geometry.location
+            });//constructs the marker on the map specified.
+            google.maps.event.addListener(marker,'click', function(){
+
+                content =  `Name: ${place.name}, Open-Now: ${place.open_now}, Timiings: ${place.periods}`;
+
+                //InfoWindow is a class which creates an info object whivh has properties
+                google.maps.InfoWindow.setContent(content);
+            })
+        }
+
+     
+        }
+
+        //callabck is a function that gets called with the places result array and the status of the results
+        
+
+        //using html5 gelocation api to get the user's lat and lng using the geolocation object
+        function getLocation(){
+            console.log('1.enetered geolocation');
+            if(navigator.geolocation){
+                navigator.geolocation.getCurrentPosition(success);//success is a callback function that gets called upon success that takes an object as input
+            }else{
+                errorHandle.innerHTML = 'Sorry, geolocation is not supported in your bworser'
+            }
+        };
+
+        //callback function that generates a postion object and determines the location's lat and lng
+        function success(position){
+            console.log('2. generated coordinates');
+            lat = position.coords.latitude;
+            console.log(lat);
+            lng = position.coords.longitude;
+            
+            //calling the initMap function
+            initMap(lat,lng);
+        } 
+        
+        //calling the getLocation function
+        getLocation();
+    </script>
+     
+    
+</body>
+
+<html>
+
+</html>
