@@ -2,6 +2,7 @@ var map,lat,lng;
 let keywordsHandle = document.getElementById('keywords');
 let searchHandle = document.getElementById('search');
 let errorHandle = document.getElementById('error');
+let searchButtonHandle = document.getElementById('searchButton');
 var querySearch = [];
 var request;
 var markers = [];
@@ -9,16 +10,17 @@ var markers = [];
 
     //event handlers 
     searchHandle.addEventListener('submit',function(e){
-    e.preventDefault();
-    querySearch.push(keywordsHandle.value);
-    keywordsHandle.value = null;
-    errorHandle.innerHTML = null;
-    getLocation();
+        e.preventDefault();
+        querySearch.push(keywordsHandle.value);
+        keywordsHandle.value = null;
+        errorHandle.innerHTML = null;
+        getLocation();
     },false);
 
     keywordsHandle.addEventListener('blur',function(){
-    querySearch.push(keywordsHandle.value)
-    console.log(querySearch);
+        searchButtonHandle.disabled= false;
+        querySearch.push(keywordsHandle.value)
+        console.log(querySearch);
     },false);
 
     //initialze a map
@@ -76,7 +78,7 @@ var markers = [];
     
     //Marker for new position
     function placeMarkerAndPanTo(latLng,map){
-           clearMarker(markers);
+        clearMarker(markers);
              
         var newMarker = new google.maps.Marker({
             position: latLng,
