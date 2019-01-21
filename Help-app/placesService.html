@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    
+
+
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+
+    <!--Optional Javascript -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBOIIADyCTwYHKJsjDlF_uTCXjYDc3IYRc&libraries=places"
+></script>
+  </head>
+  <body>
+
+    <div class="page-header" style="background-color:black; padding: 10px">
+        <h2 style="color: white"> Hello! welcome to Help App!</h2>
+    </div>
+    
+    <hr>
+    
+    <div class="col-md-3">
+        <form id="search" class="form-groups">
+            <label for="keywords" style="color:black"><b>Search for anything</b></label><br/>
+            <input id="keywords" name="keywords" type="text" class="form-control"/><br/>
+            <input type="submit" value="submit" id="searchButton" disabled class="btn btn-outline-primary"/> 
+          </form>
+    </div>
+  
+    <p id="error"></p>
+
+    <div id="map"></div>
+
+    <script src="./code.js"></script>
+    
+  </body>
+</html>

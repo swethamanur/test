@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBOIIADyCTwYHKJsjDlF_uTCXjYDc3IYRc&libraries=places"
+></script>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      var map,lat,lng;
+      var newMarker;
+      var markers = [];
+      var pointA,pointB;
+
+
+      function initMap(lat,lng) {
+
+        map = new google.maps.Map(document.getElementById('map'), {
+
+          center: {lat, lng},
+          zoom: 8
+        });
+        
+        //pointA = new google.maps.LatLng(lat, lng);
+        pointA =  new google.maps.LatLng(lat,lng)
+        
+        console.log(pointA,'pointA')
+        
+
+
+        //create marker
+        var marker = new google.maps.Marker({
+            position: {lat, lng},
+            map: map,
+            //icon: 'file:///C:/Users/Manjunath/AppData/Local/Temp/Temp1_map-icons-master.zip/map-icons-master/src/icons/cafe.svg'
+        })
+        markers.push(marker);
+        
+        var infoWindow = new google.maps.InfoWindow({
+            content: 'Starbucks Cafe'
+        });
+
+        google.maps.event.addListener(marker,'click',function(){
+            infoWindow.open(map, marker);
+        })
+
+         google.maps.event.addListener(map,'rightclick', function(e) {
+            placeMarkerAndPanTo(e.latLng, map);
+
+            var newRequest ={
+            location: e.latLng,
+            radius: 8047,
+            query: 'Starbucks'
+            };
+
+            
+        
+
+
+        //generate nearby places
+        //placesService(map,newRequest)
+       
+         
+         });
+
+        
+
+         
+
+      //function placeMarkerAndPanTo
+      function placeMarkerAndPanTo(latLng,map){
+          clearMarker(markers);
+          newMarker = new google.maps.Marker({
+              position: latLng,
+              map
+          });
+          map.panTo(latLng);
+          markers.push(newMarker);          
+      }
+        
+        
+       
+      }
+
+
+       //function for placesService obejct
+       function placesService(map,newRequest){
+          var service = new google.maps.places.PlacesService(map);
+          service.textSearch(newRequest,callback);
+      }
+
+      //callback function from the placesService
+      function callback(results,status){
+            
+        if(status == google.maps.places.PlacesServiceStatus.OK){
+            if(results.length != 0){
+                results.forEach((result) =>{
+                    
+                    markers.push(createMarker(result));
+                })
+            }else{
+                errorHandle.innerHTML = 'Oops! We could not find anything with that! Try with better words'
+            }
+           
+        }
+        
+    }
+
+     //dierction services
+     function displayRoute() {
+
+            var start = pointA;
+            var end = pointB;
+
+            var directionsDisplay = new google.maps.DirectionsRenderer();// also, constructor can get "DirectionsRendererOptions" object
+            directionsDisplay.setMap(map); // map should be already initialized.
+
+            var request = {
+                origin : start,
+                destination : end,
+                travelMode : google.maps.TravelMode.DRIVING
+            };
+            var directionsService = new google.maps.DirectionsService(); 
+            directionsService.route(request, function(response, status) {
+                if (status == google.maps.DirectionsStatus.OK) {
+                    directionsDisplay.setDirections(response);
+                }
+            });
+}
+
+    //create marker function
+
+     function createMarker(place,callback2){
+        console.log(place);
+        var marker = new google.maps.Marker({
+        position: place.geometry.location,
+        map: map,
+        //icon: 'file:///C:/Users/Manjunath/AppData/Local/Temp/Temp1_map-icons-master.zip/map-icons-master/src/icons/cafe.svg',
+        });
+        pointB =  new google.maps.LatLng(position.lat, position.lng);
+        console.log(pointB,'b');
+        
+
+        //pushing this marker to the markers array
+        markers.push(marker);  
+
+        //create infowindow and event listener
+        var infoWindow = new google.maps.InfoWindow({
+            content: `<b>${place.name}}</b>`
+        });
+
+        google.maps.event.addListener(marker,'click',function(){
+            infoWindow.open(map, marker);
+        })
+    console.log(markers);
+    }
+     
+     //clear Marker
+    function clearMarker(markers){
+        markers.forEach((marker) =>{
+            marker.setMap(null);
+        });
+        markers.length = 0;
+    }
+
+     
+      function getLocation(){
+            
+            if(navigator.geolocation){
+              navigator.geolocation.getCurrentPosition(success);//success is a callback function that gets called upon success that takes an object as input
+            }
+            else{
+                console.log('Sorry, geolocation is not supported in your bworser');
+            }
+      };
+
+        //callback function that generates a postion object and determines the location's lat and lng
+      function success(position){
+          console.log('2. generated coordinates','lat',lat);
+          lat = position.coords.latitude;
+          console.log('3. generated coordinates','lat',lat);
+          lng = position.coords.longitude;
+
+          initMap(lat,lng);
+          
+      }   
+      
+
+      //invoking the get location function
+      getLocation();
+      displayRoute();
+       
+    </script>
+    
+  </body>
+</html>
