@@ -1,0 +1,36 @@
+*React is installed using npm create-react-app appname
+*Index.html is the main file that is loaded where the App componenet is embedded in the root div.
+*IN App.js
+App class is a class component and there is always one life cycle method called render used which returns jsx code.
+
+* Jsx is bascially embedded javascript within html.
+*It is done bec doing using react is very diffocult and a lot of effort.
+
+*css is same as html but it is camelcasing here.
+
+*.map is a high  order method that takes in an array and tranfroms it and returns an array with jsx in t.
+
+import PropTypes  from 'prop-types';
+to validtae the prop data types
+
+*Note:
+We cannot use normal function es5 in class components because these user defined functions do not know what 'this' is and is undefinde. We can solve it by using the bind(this ) method.
+
+Else we can use arrow functions as it binds this to the current object and knows what this is.
+
+Also, the life cycle methods like render(), componenetDidMount() bind this and know this because they are part of the React.Componenet
+
+*We need to always climp the ladder up to the App component where the state is defined.
+
+*Note:
+For bootstrap in react:
+$ npm install --save react react-dom
+$ npm install --save react-bootstrap
+then import what you really need from the bootstrap like :
+
+import Button from 'react-bootstrap/lib/Button';
+
+
+Note:
+React.Fragment is again a tag that can be used to wrap React elements intoone component.
+
